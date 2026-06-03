@@ -4,10 +4,12 @@ let score = 0;
 let timer;
 let timeLeft = 15;
 let quiz = [];
-let selectedCategory = "";
+//let selectedCategory = "";
+let selectedBranch = "";
+let selectedSubject = "";
 
 const quizData = {
-
+CSE:{
 html: [
 {q:"HTML stands for?",a:"Hyper Text Markup Language",b:"High Text Machine Language",c:"Hyper Tool ML",d:"None",cAns:"a"},
 {q:"Which tag creates a link?",a:"<a>",b:"<link>",c:"<href>",d:"<url>",cAns:"a"},
@@ -46,6 +48,89 @@ js: [
 {q:"Get element by ID?",a:"get()",b:"getId()",c:"getElementById()",d:"query()",cAns:"c"},
 {q:"JS runs on?",a:"Server",b:"Client",c:"Database",d:"Compiler",cAns:"b"}
 ]
+
+};
+ECE: {
+
+Digital: [
+
+{q:"What is a Logic Gate?",a:"Memory",b:"Switching Circuit",c:"Processor",d:"Register",cAns:"b"},
+
+{q:"How many inputs does a NOT gate have?",a:"1",b:"2",c:"3",d:"4",cAns:"a"},
+
+{q:"The output of an AND gate is HIGH when?",a:"Any input is HIGH",b:"All inputs are HIGH",c:"All inputs are LOW",d:"Any input is LOW",cAns:"b"},
+
+{q:"The output of an OR gate is LOW when?",a:"All inputs are LOW",b:"All inputs are HIGH",c:"Any input is HIGH",d:"One input is LOW",cAns:"a"},
+
+{q:"Which gate is called a Universal Gate?",a:"AND",b:"OR",c:"NAND",d:"XOR",cAns:"c"},
+
+{q:"How many possible outputs does a binary digit have?",a:"4",b:"8",c:"2",d:"16",cAns:"c"},
+
+{q:"A Flip-Flop is used as?",a:"Amplifier",b:"Memory Element",c:"Sensor",d:"Counter",cAns:"b"},
+
+{q:"What is the binary equivalent of decimal 5?",a:"101",b:"110",c:"111",d:"100",cAns:"a"},
+
+{q:"Which gate gives HIGH output when inputs are different?",a:"AND",b:"OR",c:"XOR",d:"NOT",cAns:"c"},
+
+{q:"A Half Adder is used to?",a:"Subtract Binary Numbers",b:"Multiply Binary Numbers",c:"Add Two Binary Digits",d:"Store Data",cAns:"c"}
+
+],
+
+Microprocessor: [
+
+{q:"8086 is a?",a:"Microprocessor",b:"Sensor",c:"Transistor",d:"IC",cAns:"a"},
+
+{q:"8086 is a ___ bit microprocessor.",a:"4",b:"8",c:"16",d:"32",cAns:"c"},
+
+{q:"Which company developed the 8086 microprocessor?",a:"IBM",b:"Intel",c:"AMD",d:"Motorola",cAns:"b"},
+
+{q:"What is the function of the ALU?",a:"Store Data",b:"Perform Arithmetic and Logic Operations",c:"Control Input Devices",d:"Generate Clock Signals",cAns:"b"},
+
+{q:"Which register stores the address of the next instruction?",a:"AX",b:"BX",c:"Program Counter",d:"DX",cAns:"c"},
+
+{q:"What does CPU stand for?",a:"Central Process Unit",b:"Central Processing Unit",c:"Computer Processing Unit",d:"Control Processing Unit",cAns:"b"},
+
+{q:"Which bus carries data between CPU and memory?",a:"Address Bus",b:"Control Bus",c:"Data Bus",d:"System Bus",cAns:"c"},
+
+{q:"What is the size of the data bus in 8086?",a:"8 bits",b:"16 bits",c:"32 bits",d:"64 bits",cAns:"b"},
+
+{q:"Which memory is volatile?",a:"ROM",b:"EEPROM",c:"RAM",d:"Flash Memory",cAns:"c"},
+
+{q:"Which instruction is used to transfer data in 8086?",a:"ADD",b:"MOV",c:"SUB",d:"MUL",cAns:"b"},
+
+{q:"What is the maximum memory that 8086 can address?",a:"64 KB",b:"256 KB",c:"1 MB",d:"4 MB",cAns:"c"}
+
+]
+
+},
+
+EEE: {
+
+Machines: [
+
+{q:"Transformer works on?",a:"DC",b:"AC",c:"Battery",d:"Motor",cAns:"b"},
+
+{q:"Which machine converts electrical energy into mechanical energy?",a:"Generator",b:"Transformer",c:"Motor",d:"Battery",cAns:"c"},
+
+{q:"Which machine converts mechanical energy into electrical energy?",a:"Motor",b:"Generator",c:"Transformer",d:"Rectifier",cAns:"b"},
+
+{q:"A transformer operates on the principle of?",a:"Self Induction",b:"Mutual Induction",c:"Electrolysis",d:"Resistance",cAns:"b"},
+
+{q:"Which type of current does a transformer require?",a:"DC",b:"AC",c:"Both AC and DC",d:"Pulsating DC",cAns:"b"},
+
+{q:"The stationary part of a motor is called?",a:"Rotor",b:"Commutator",c:"Stator",d:"Armature",cAns:"c"},
+
+{q:"The rotating part of an electrical machine is called?",a:"Stator",b:"Rotor",c:"Core",d:"Pole",cAns:"b"},
+
+{q:"Which motor is commonly used in electric fans?",a:"DC Series Motor",b:"Stepper Motor",c:"Single-Phase Induction Motor",d:"Universal Motor",cAns:"c"},
+
+{q:"The efficiency of a transformer is generally?",a:"20-40%",b:"40-60%",c:"60-80%",d:"90-98%",cAns:"d"},
+
+{q:"What is the unit of transformer rating?",a:"kW",b:"HP",c:"kVA",d:"Volt",cAns:"c"}
+
+]
+
+}
 
 };
 function signup(){
@@ -135,8 +220,59 @@ function openCategories(){
     document.getElementById("dashboardScreen")
     .classList.add("hidden");
 
-    document.getElementById("categoryScreen")
+    document.getElementById("branchScreen")
     .classList.remove("hidden");
+}
+function selectBranch(branch){
+
+    selectedBranch = branch;
+
+    document.getElementById("branchScreen")
+    .classList.add("hidden");
+
+    document.getElementById("subjectScreen")
+    .classList.remove("hidden");
+
+    document.getElementById("branchTitle").innerText =
+    `${branch} Subjects`;
+
+    let subjects =
+    Object.keys(quizData[branch]);
+
+    let html = "";
+
+    subjects.forEach(subject=>{
+
+        html += `
+        <button onclick="startSubjectQuiz('${subject}')">
+            ${subject}
+        </button>
+        `;
+    });
+
+    document.getElementById("subjectButtons")
+    .innerHTML = html;
+}
+function startSubjectQuiz(subject){
+
+    selectedSubject = subject;
+
+    quiz = quizData[selectedBranch][subject];
+
+    current = 0;
+    score = 0;
+
+    document.getElementById("subjectScreen")
+    .classList.add("hidden");
+
+    document.getElementById("quizScreen")
+    .classList.remove("hidden");
+
+    document.getElementById("categoryTitle")
+    .innerText =
+    `${selectedBranch} - ${selectedSubject}`;
+
+    loadQuestion();
 }
 
 function logoutUser(){
@@ -166,22 +302,6 @@ function showCategories() {
     document.getElementById("categoryScreen").classList.remove("hidden");
 }
 
-function startQuiz(category){
-
-    selectedCategory = category.toUpperCase();
-
-    quiz = quizData[category];
-    current = 0;
-    score = 0;
-
-    document.getElementById("categoryTitle").innerText =
-    `Category : ${selectedCategory}`;
-
-    document.getElementById("categoryScreen").classList.add("hidden");
-    document.getElementById("quizScreen").classList.remove("hidden");
-
-    loadQuestion();
-}
 
 function loadQuestion(){
 
@@ -315,8 +435,7 @@ function showResult(){
 
         <p>Successfully completed</p>
 
-        <h3>${selectedCategory} QUIZ</h3>
-
+       <h3>${selectedBranch} - ${selectedSubject} QUIZ</h3>
         <p>Score : ${score} / ${quiz.length}</p>
 
         <p>Percentage : ${percent}%</p>
