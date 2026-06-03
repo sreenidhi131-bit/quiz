@@ -26,13 +26,40 @@
 
 </div>
 
-    <!-- CATEGORY SCREEN -->
-    <div id="categoryScreen" class="hidden">
-        <h2>Select Category</h2>
-        <button onclick="startQuiz('html')">HTML</button>
-        <button onclick="startQuiz('css')">CSS</button>
-        <button onclick="startQuiz('js')">JavaScript</button>
-    </div>
+   
+  <!-- BRANCH SCREEN -->
+<div id="branchScreen" class="hidden">
+
+    <h2>Select Branch</h2>
+
+    <button onclick="selectBranch('CSE')">
+        Computer Science (CSE)
+    </button>
+
+    <button onclick="selectBranch('ECE')">
+        Electronics (ECE)
+    </button>
+
+    <button onclick="selectBranch('EEE')">
+        Electrical (EEE)
+    </button>
+
+    <button onclick="selectBranch('ME')">
+        Mechanical (ME)
+    </button>
+
+</div>
+
+<!-- SUBJECT SCREEN -->
+<div id="subjectScreen" class="hidden">
+
+    <h2 id="branchTitle">
+        Select Subject
+    </h2>
+
+    <div id="subjectButtons"></div>
+
+</div>
      <!-- USER DASHBOARD -->
 <div id="dashboardScreen" class="hidden">
 
