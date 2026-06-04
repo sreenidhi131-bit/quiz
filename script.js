@@ -296,6 +296,10 @@ function startSubjectQuiz(subject){
 
     quiz = quizData[selectedBranch][subject];
 
+if(!quiz){
+    alert("Questions not found");
+    return;
+}
     current = 0;
     score = 0;
 
