@@ -49,7 +49,7 @@ js: [
 {q:"JS runs on?",a:"Server",b:"Client",c:"Database",d:"Compiler",cAns:"b"}
 ]
 
-};
+},
 ECE: {
 
 Digital: [
@@ -143,16 +143,40 @@ function signup(){
 
     if(username === "" || password === ""){
 
-        showMessage("Please fill all fields","red");
+        showMessage(
+            "Please fill all fields",
+            "red"
+        );
         return;
     }
 
-    localStorage.setItem("quizUser", username);
-    localStorage.setItem("quizPass", password);
+    let users =
+    JSON.parse(localStorage.getItem("quizUsers"))
+    || {};
+
+    if(users[username]){
+
+        showMessage(
+            "Username already exists",
+            "red"
+        );
+        return;
+    }
+
+    users[username] = {
+        password: password,
+        lastScore: 0,
+        bestScore: 0
+    };
+
+    localStorage.setItem(
+        "quizUsers",
+        JSON.stringify(users)
+    );
 
     showMessage(
-    "Signup Successful ✅ Please Login",
-    "lightgreen"
+        "Signup Successful ✅ Please Login",
+        "green"
     );
 
     document.getElementById("username").value = "";
@@ -166,55 +190,68 @@ function login(){
     let password =
     document.getElementById("password").value.trim();
 
-    let storedUser =
-    localStorage.getItem("quizUser");
+    let users =
+    JSON.parse(localStorage.getItem("quizUsers"))
+    || {};
 
-    let storedPass =
-    localStorage.getItem("quizPass");
-
-    if(username === storedUser &&
-       password === storedPass){
+    if(
+        users[username] &&
+        users[username].password === password
+    ){
 
         userName = username;
 
-        showMessage("Login Successful ✅","lightgreen");
+        showMessage(
+            "Login Successful ✅",
+            "green"
+        );
 
         setTimeout(()=>{
 
-            document.getElementById("startScreen")
+            document
+            .getElementById("startScreen")
             .classList.add("hidden");
 
-            document.getElementById("dashboardScreen")
+            document
+            .getElementById("dashboardScreen")
             .classList.remove("hidden");
 
             loadDashboard();
 
         },1000);
 
-    }else{
+    }
+    else{
 
-        showMessage("Invalid Username or Password ❌","red");
+        showMessage(
+            "Invalid Username or Password ❌",
+            "red"
+        );
     }
 }
-
 function loadDashboard(){
 
-    document.getElementById("dashboardUser")
-    .innerText = userName;
+    document.getElementById(
+        "dashboardUser"
+    ).innerText = userName;
 
-    let last =
-    localStorage.getItem("lastScore") || 0;
+    let users =
+    JSON.parse(localStorage.getItem("quizUsers"))
+    || {};
 
-    let best =
-    localStorage.getItem("bestScore") || 0;
+    let user =
+    users[userName];
 
-    document.getElementById("lastScore")
-    .innerText = `🏆 Last Score : ${last}`;
+    document.getElementById(
+        "lastScore"
+    ).innerText =
+    `🏆 Last Score : ${user.lastScore}`;
 
-    document.getElementById("bestScore")
-    .innerText = `⭐ Best Score : ${best}`;
+    document.getElementById(
+        "bestScore"
+    ).innerText =
+    `⭐ Best Score : ${user.bestScore}`;
 }
-
 function openCategories(){
 
     document.getElementById("dashboardScreen")
@@ -415,15 +452,27 @@ function showResult(){
     let percent = (score/quiz.length)*100;
 
     // Save Scores
-    localStorage.setItem("lastScore", score);
+   localStorage.setItem(
+    userName + "_lastScore",
+    score
+);
 
-    let best =
-    localStorage.getItem("bestScore") || 0;
+let users =
+JSON.parse(localStorage.getItem("quizUsers"))
+|| {};
 
-    if(score > best){
+users[userName].lastScore = score;
 
-        localStorage.setItem("bestScore", score);
-    }
+if(score > users[userName].bestScore){
+
+    users[userName].bestScore = score;
+}
+
+localStorage.setItem(
+    "quizUsers",
+    JSON.stringify(users)
+);
+    
 
     document.getElementById("resultScreen").innerHTML = `
 
