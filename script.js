@@ -326,14 +326,6 @@ function showMessage(message,color){
     msg.style.color = color;
 }
 
-function showCategories() {
-
-    userName = document.getElementById("username").value;
-
-    if(userName.trim() === ""){
-        alert("Please enter your name");
-        return;
-    }
 
     document.getElementById("startScreen").classList.add("hidden");
     document.getElementById("categoryScreen").classList.remove("hidden");
@@ -430,8 +422,7 @@ function resetTimer(){
 
         }else{
 
-            document.getElementById("timer").style.color = "white";
-        }
+           document.getElementById("timer").style.color = "black";       }
 
         if(timeLeft === 0){
 
