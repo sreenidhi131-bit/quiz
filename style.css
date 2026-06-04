@@ -294,3 +294,6 @@ input[type="password"]{
 
     background:#dc2626;
 }
+.hidden{
+    display:none;
+}
