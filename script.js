@@ -184,6 +184,10 @@ function signup(){
 }
 function login(){
 
+    
+    alert("Login button clicked");
+
+  
     let username =
     document.getElementById("username").value.trim();
 
